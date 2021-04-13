@@ -15,7 +15,7 @@ enum PieceType
 struct ChessFillLib
 {
    enum PieceType m_Board[4][4];
-   int m_PiecesRemaining[6];
+   int m_PiecesRemaining[7];
 
    enum PieceType m_CurrentPiece;
    int m_nCurrentX;
@@ -28,10 +28,10 @@ struct ChessFillLib
 int ChessFillLibCreate( struct ChessFillLib** api );
 int ChessFillLibFree( struct ChessFillLib** api );
 
-enum PieceType GetCurrentPiece( struct ChessFillLib* api );
-enum PieceType GetPieceAt( struct ChessFillLib* api, int x, int y );
-int IsValidPiecePlacement( struct ChessFillLib* api, int x, int y );
-int PlaceNextPieceAt( struct ChessFillLib* api, int x, int y );
-//int PlacePiece
+enum PieceType GetCurrentPiece( struct ChessFillLib* pChessFill );
+enum PieceType GetPieceAt( struct ChessFillLib* pChessFill, int x, int y );
+int IsValidPiecePlacement( struct ChessFillLib* pChessFill, int x, int y );
+int PlaceNextPieceAt( struct ChessFillLib* pChessFill, int x, int y );
+int PlacesRemaining( struct ChessFillLib* pChessFill );
 
 #endif
