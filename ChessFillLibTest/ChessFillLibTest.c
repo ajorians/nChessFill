@@ -17,10 +17,30 @@ int TestConstruction()
    return TEST_SUCCEEDED;
 }
 
+int TestGetCurrentPiece()
+{
+   struct ChessFillLib* pChessFillLib = NULL;
+
+   if ( CHESSFILLLIB_OK != ChessFillLibCreate( &pChessFillLib ) )
+   {
+      return TEST_FAILED;
+   }
+
+   enum PieceType ePiece = GetCurrentPiece( pChessFillLib );
+   if( ePiece == Empty )
+   {
+      return TEST_FAILED;
+   }
+
+   ChessFillLibFree( &pChessFillLib );
+   return TEST_SUCCEEDED;
+}
+
 typedef int (*testfunc)();
 testfunc g_Tests[] =
 {
-   TestConstruction
+   TestConstruction,
+   TestGetCurrentPiece
 };
 
 void RunTests()
