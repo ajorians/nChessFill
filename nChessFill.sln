@@ -7,6 +7,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChessFillLib", "ChessFillLi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChessFillLibTest", "ChessFillLibTest\ChessFillLibTest.vcxproj", "{8649798D-1388-4E04-9A7C-9D1F2AB49F39}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChessFill", "ChessFillSDL\ChessFill.vcxproj", "{6312CBD0-7DE7-467D-AF1B-AC4D8B9F38BE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{160FDC9C-1AE7-43D2-B5EE-AB8F1CE71552}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +38,14 @@ Global
 		{8649798D-1388-4E04-9A7C-9D1F2AB49F39}.Release|x64.Build.0 = Release|x64
 		{8649798D-1388-4E04-9A7C-9D1F2AB49F39}.Release|x86.ActiveCfg = Release|Win32
 		{8649798D-1388-4E04-9A7C-9D1F2AB49F39}.Release|x86.Build.0 = Release|Win32
+		{6312CBD0-7DE7-467D-AF1B-AC4D8B9F38BE}.Debug|x64.ActiveCfg = Debug|x64
+		{6312CBD0-7DE7-467D-AF1B-AC4D8B9F38BE}.Debug|x64.Build.0 = Debug|x64
+		{6312CBD0-7DE7-467D-AF1B-AC4D8B9F38BE}.Debug|x86.ActiveCfg = Debug|Win32
+		{6312CBD0-7DE7-467D-AF1B-AC4D8B9F38BE}.Debug|x86.Build.0 = Debug|Win32
+		{6312CBD0-7DE7-467D-AF1B-AC4D8B9F38BE}.Release|x64.ActiveCfg = Release|x64
+		{6312CBD0-7DE7-467D-AF1B-AC4D8B9F38BE}.Release|x64.Build.0 = Release|x64
+		{6312CBD0-7DE7-467D-AF1B-AC4D8B9F38BE}.Release|x86.ActiveCfg = Release|Win32
+		{6312CBD0-7DE7-467D-AF1B-AC4D8B9F38BE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

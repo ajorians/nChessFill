@@ -17,3 +17,4 @@ Solution.VC.db-wal
 *.lib
 *.exe
 *.ilk
+*.dll
