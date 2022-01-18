@@ -167,7 +167,9 @@ xcopy /dy C:\Git\SDL\SDL_gfx\$(Platform)\$(Configuration)\*.dll $(OutDir)</Comma
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Font.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="MainMenu.c" />
     <ClCompile Include="Replacements.c" />
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +178,12 @@ xcopy /dy C:\Git\SDL\SDL_gfx\$(Platform)\$(Configuration)\*.dll $(OutDir)</Comma
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Replacements.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="arial.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

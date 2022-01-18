@@ -8,6 +8,7 @@
 #ifndef _TINSPIRE
 #include <SDL/SDL_ttf.h>
 #endif
+#include "MainMenu.h"
 #include "Replacements.h"
 
 #define SCREEN_BIT_DEPTH        (16)
@@ -80,27 +81,27 @@ int main( int argc, char* argv[] )
 #ifdef _TINSPIRE
    CreateConfig(&pConfig);
 #endif
-   /*while(1) {
+   while(1) {
       int bShowHelp = 0, bShowOptions = 0;
       if( argc != 2 ) {
          struct MainMenu* pMenu = NULL;
          int bShouldQuit = 0;
-         CreateMainMenu(&pMenu, nLevelNumber, pConfig, pScreen);
+         CreateMainMenu(&pMenu/*, nLevelNumber, pConfig*/, pScreen);
          while(MainMenuLoop(pMenu)){}
          bShouldQuit = MainMenuShouldQuit(pMenu);
-         bShowOptions = MainMenuShowOptions(pMenu);
+         /*bShowOptions = MainMenuShowOptions(pMenu);
          bShowHelp = MainMenuShowHelp(pMenu);
          if( bShouldQuit == 0 && bShowOptions == 0 && bShowHelp == 0 ) {
             nLevelNumber = MainMenuGetLevelNum(pMenu);
 	    printf("Loading level: %d\n", nLevelNumber);
             LevelLoad(strLevelData, nLevelNumber);
-         }
+         }*/
          FreeMainMenu(&pMenu);
 
          if( bShouldQuit )
             break;
       }
-      else {
+      /*else {
          FILE *fp = fopen(argv[1], "r");
          if (!fp) { return 0; }
          struct stat filestat;
@@ -139,8 +140,8 @@ int main( int argc, char* argv[] )
             break;
          if( nLevelNumber == -1 )
             break;
-      }
-   }*/
+      }*/
+   }
 
 #ifdef _TINSPIRE
    FreeConfig(&pConfig);
