@@ -8,6 +8,7 @@
 #ifndef _TINSPIRE
 #include <SDL/SDL_ttf.h>
 #endif
+#include "Game.h"
 #include "MainMenu.h"
 #include "Replacements.h"
 
@@ -87,15 +88,10 @@ int main( int argc, char* argv[] )
          struct MainMenu* pMenu = NULL;
          int bShouldQuit = 0;
          CreateMainMenu(&pMenu/*, nLevelNumber, pConfig*/, pScreen);
-         while(MainMenuLoop(pMenu)){}
+         while(MainMenuLoop(pMenu) != DecisionMade){}
          bShouldQuit = MainMenuShouldQuit(pMenu);
          /*bShowOptions = MainMenuShowOptions(pMenu);
-         bShowHelp = MainMenuShowHelp(pMenu);
-         if( bShouldQuit == 0 && bShowOptions == 0 && bShowHelp == 0 ) {
-            nLevelNumber = MainMenuGetLevelNum(pMenu);
-	    printf("Loading level: %d\n", nLevelNumber);
-            LevelLoad(strLevelData, nLevelNumber);
-         }*/
+         bShowHelp = MainMenuShowHelp(pMenu);*/
          FreeMainMenu(&pMenu);
 
          if( bShouldQuit )
@@ -112,35 +108,33 @@ int main( int argc, char* argv[] )
          strLevelData[filestat.st_size] = 0;
 
          fclose(fp);
-      }
+      }*/
 
       if( bShowOptions ) {
-         struct Options* pOptions = NULL;
+        /* struct Options* pOptions = NULL;
          CreateOptions(&pOptions, pConfig, pScreen);
          while(OptionsLoop(pOptions)){}
-         FreeOptions(&pOptions);
+         FreeOptions(&pOptions);*/
          continue;
       }
       else if( bShowHelp ) {
-         struct Help* pHelp = NULL;
+         /*struct Help* pHelp = NULL;
          CreateHelp(&pHelp, pScreen);
          while(HelpLoop(pHelp)){}
-         FreeHelp(&pHelp);
+         FreeHelp(&pHelp);*/
          continue;
       }
       else {
          struct Game* pGame = NULL;
          int bShouldQuit = 0;
-         CreateGame(&pGame, strLevelData, nLevelNumber, pConfig, pScreen);
+         CreateGame(&pGame/*, pConfig*/, pScreen);
          while(GameLoop(pGame)){}
          bShouldQuit = GameShouldQuit(pGame);
          FreeGame(&pGame);
 
          if( bShouldQuit )
             break;
-         if( nLevelNumber == -1 )
-            break;
-      }*/
+      }
    }
 
 #ifdef _TINSPIRE

@@ -5,11 +5,8 @@
 #include <os.h>
 #endif
 #include "SDL/SDL.h"
-//#include "Background.h"
 //#include "Config.h"
-//#include "MenuItem.h"
 #include "Font.h"
-//#include "StarDrawer.h"
 
 enum MenuChoice
 {
@@ -24,6 +21,12 @@ enum SelectionLocation
    Categories,
    Levels,
    Other
+};
+
+enum MainMenuDecision
+{
+   DecisionMade,
+   NoDecisionMade
 };
 
 struct MainMenu
@@ -47,7 +50,7 @@ struct MainMenu
 
 void CreateMainMenu(struct MainMenu** ppMenu/*, int nLevelNum, struct Config* pConfig*/, struct SDL_Surface* pScreen);
 void FreeMainMenu(struct MainMenu** ppMenu);
-int MainMenuLoop(struct MainMenu* pMenu);
+enum MainMenuDecision MainMenuLoop(struct MainMenu* pMenu);
 int MainMenuShouldQuit(struct MainMenu* pMenu);
 //int MainMenuShowOptions(struct MainMenu* pMenu);
 //int MainMenuShowHelp(struct MainMenu* pMenu);
