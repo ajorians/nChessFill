@@ -71,8 +71,14 @@ void DrawBoard(struct Game* pGame)
       for ( int y = 0; y < 4; y++ )
       {
          enum PieceType piece = GetPieceAt( pGame->m_Chess, x, y );
-         //if ( piece == Empty )
-         //   continue;
+         if ( piece == Empty )
+         {
+            if ( IsValidPiecePlacement( pGame->m_Chess, x, y ) )
+            {
+               DrawText( pGame->m_pScreen, pGame->m_pFont, x * 20, y * 20, "X", 0, 255, 255);
+            }
+            continue;
+         }
 
          char buffer[2];
          switch ( piece )

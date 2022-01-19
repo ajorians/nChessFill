@@ -17,9 +17,9 @@ struct ChessFillLib
    enum PieceType m_Board[4][4];
    int m_PiecesRemaining[7];
 
-   enum PieceType m_CurrentPiece;
-   int m_nCurrentX;
-   int m_nCurrentY;
+   enum PieceType m_LastPiece;
+   int m_nLastX;
+   int m_nLastY;
 };
 
 #define CHESSFILLLIB_OK             (0)
@@ -28,7 +28,7 @@ struct ChessFillLib
 int ChessFillLibCreate( struct ChessFillLib** api );
 int ChessFillLibFree( struct ChessFillLib** api );
 
-enum PieceType GetCurrentPiece( struct ChessFillLib* pChessFill );
+enum PieceType GetLastPiece( struct ChessFillLib* pChessFill );
 enum PieceType GetPieceAt( struct ChessFillLib* pChessFill, int x, int y );
 int IsValidPiecePlacement( struct ChessFillLib* pChessFill, int x, int y );
 int PlaceNextPieceAt( struct ChessFillLib* pChessFill, int x, int y );
