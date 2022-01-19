@@ -52,6 +52,8 @@ int ChessFillLibCreate( struct ChessFillLib** api )
       return CHESSFILLLIB_OUTOFMEMORY;
    }
 
+   pChessFill->m_nCurrentX = pChessFill->m_nCurrentY = -1;
+
    for ( int x = 0; x < 4; x++ )
    {
       for ( int y = 0; y < 4; y++ )
@@ -99,6 +101,11 @@ int IsValidPiecePlacement( struct ChessFillLib* pChessFill, int x, int y )
    if ( GetPieceAt( pChessFill, x, y ) != Empty )
    {
       return 0;
+   }
+
+   if ( pChessFill->m_nCurrentX == -1 && pChessFill->m_nCurrentY == -1 )
+   {
+      return 1;
    }
 
    if ( pChessFill->m_CurrentPiece == Pawn )
@@ -175,6 +182,8 @@ int PlaceNextPieceAt( struct ChessFillLib* pChessFill, int x, int y )
    }
 
    pChessFill->m_Board[x][y] = pChessFill->m_CurrentPiece;
+   pChessFill->m_nCurrentX = x;
+   pChessFill->m_nCurrentY = y;
    //Pick new current piece
    PickNewCurrentPiece( pChessFill );
 

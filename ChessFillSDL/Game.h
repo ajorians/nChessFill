@@ -22,6 +22,8 @@ struct Game
    struct SDL_Surface* m_pScreen;//Does not own
    //struct Background* m_pBackground;
    Font *m_pFont;
+   int m_nX;
+   int m_nY;
 };
 
 void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Surface* pScreen);

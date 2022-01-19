@@ -30,6 +30,8 @@ void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Sur
    pGame->m_bShouldQuit = 0;
 
    pGame->m_pFont = LoadFont("ARIAL.TTF", NSDL_FONT_THIN, 255/*R*/, 0/*G*/, 0/*B*/, 12);
+   pGame->m_nX = 0;
+   pGame->m_nY = 0;
 }
 
 void FreeGame(struct Game** ppGame)
@@ -54,6 +56,14 @@ void FreeGame(struct Game** ppGame)
 
 void DrawBoard(struct Game* pGame)
 {
+   SDL_Rect rectDst;
+   rectDst.w = SCREEN_WIDTH;
+   rectDst.h = SCREEN_HEIGHT;
+   rectDst.x = 0;
+   rectDst.y = 0;
+
+   SDL_FillRect(pGame->m_pScreen, &rectDst, SDL_MapRGB(pGame->m_pScreen->format, 255, 255, 255));
+
    //DrawBackground(pGame->m_pBackground);
 #if 1
    for ( int x = 0; x < 4; x++ )
@@ -64,10 +74,38 @@ void DrawBoard(struct Game* pGame)
          //if ( piece == Empty )
          //   continue;
 
-         DrawText( pGame->m_pScreen, pGame->m_pFont, x * 20, y * 20, "X", 0, 0, 255 );
+         char buffer[2];
+         switch ( piece )
+         {
+            case Empty:
+               strcpy( buffer, "X" );
+               break;
+            case Pawn:
+               strcpy( buffer, "P" );
+               break;
+            case Rook:
+               strcpy( buffer, "R" );
+               break;
+            case Knight:
+               strcpy( buffer, "k" );
+               break;
+            case Bishop:
+               strcpy( buffer, "B" );
+               break;
+            case Queen:
+               strcpy( buffer, "Q" );
+               break;
+            case King:
+               strcpy( buffer, "K" );
+               break;
+         }
+         
+
+         DrawText( pGame->m_pScreen, pGame->m_pFont, x * 20, y * 20, buffer, 0, 0, 255 );
       }
    }
 
+   DrawText( pGame->m_pScreen, pGame->m_pFont, pGame->m_nX * 20, pGame->m_nY * 20, "Z", 255, 0, 255 );
 
    //Draw selector
    //DrawSelector(pGame->m_pSelector);
@@ -99,6 +137,10 @@ int GamePollEvents(struct Game* pGame)
                case SDLK_UP:
                case SDLK_8:
 		  if( pGame->m_bWon != 1 ) {
+           if ( pGame->m_nY > 0 )
+           {
+              pGame->m_nY--;
+           }
                      //Move(pGame->m_pSelector, Up);
 		  }
                   break;
@@ -106,6 +148,10 @@ int GamePollEvents(struct Game* pGame)
 	       case SDLK_DOWN:
                case SDLK_2:
 		  if( pGame->m_bWon != 1 ) {
+           if ( pGame->m_nY < 3 )
+           {
+              pGame->m_nY++;
+           }
                      //Move(pGame->m_pSelector, Down);
 		  }
                   break;
@@ -113,6 +159,10 @@ int GamePollEvents(struct Game* pGame)
                case SDLK_LEFT:
                case SDLK_4:
 		  if( pGame->m_bWon != 1 ) {
+           if ( pGame->m_nX > 0 )
+           {
+              pGame->m_nX--;
+           }
                      //Move(pGame->m_pSelector, Left);
 		  }
                   break;
@@ -120,6 +170,10 @@ int GamePollEvents(struct Game* pGame)
                case SDLK_RIGHT:
                case SDLK_6:
 		  if( pGame->m_bWon != 1 ) {
+           if ( pGame->m_nX < 3 )
+           {
+              pGame->m_nX++;
+           }
                      //Move(pGame->m_pSelector, Right);
 		  }
                   break;
@@ -128,6 +182,7 @@ int GamePollEvents(struct Game* pGame)
                case SDLK_LCTRL:
                case SDLK_RCTRL:
 		  if( pGame->m_bWon != 1 ) {
+           PlaceNextPieceAt( pGame->m_Chess, pGame->m_nX, pGame->m_nY );
                      //ToggleCrossCellValue(pGame->m_Cross, GetCurrentX(pGame->m_pSelector), GetCurrentY(pGame->m_pSelector));
 
 		     //pGame->m_bWon = IsCrossGameOver(pGame->m_Cross);
