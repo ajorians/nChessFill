@@ -52,6 +52,23 @@ int ChessFillLibCreate( struct ChessFillLib** api )
       return CHESSFILLLIB_OUTOFMEMORY;
    }
 
+   Restart(pChessFill);
+
+   *api = pChessFill;
+   return CHESSFILLLIB_OK;
+}
+
+int ChessFillLibFree( struct ChessFillLib** api )
+{
+   struct ChessFillLib* pChessFill = *api;
+   free( pChessFill );
+   *api = NULL;
+
+   return CHESSFILLLIB_OK;
+}
+
+void Restart( struct ChessFillLib* pChessFill )
+{
    pChessFill->m_nLastX = pChessFill->m_nLastY = -1;
 
    for ( int x = 0; x < 4; x++ )
@@ -70,18 +87,6 @@ int ChessFillLibCreate( struct ChessFillLib** api )
    pChessFill->m_PiecesRemaining[King] = 1;
 
    PlaceNextPieceAt( pChessFill, rand() % 4, 2 + ( rand() % 2 ) );
-
-   *api = pChessFill;
-   return CHESSFILLLIB_OK;
-}
-
-int ChessFillLibFree( struct ChessFillLib** api )
-{
-   struct ChessFillLib* pChessFill = *api;
-   free( pChessFill );
-   *api = NULL;
-
-   return CHESSFILLLIB_OK;
 }
 
 enum PieceType GetLastPiece( struct ChessFillLib* pChessFill )
@@ -249,4 +254,35 @@ int PlacesRemaining( struct ChessFillLib* pChessFill )
       pChessFill->m_PiecesRemaining[Bishop] +
       pChessFill->m_PiecesRemaining[Queen] +
       pChessFill->m_PiecesRemaining[King];
+}
+
+enum GameStatus GetGameStatus( struct ChessFillLib* pChessFill )
+{
+   int allSpotsFilled = 1;
+   for ( int x = 0; x < 4; x++ )
+   {
+      for ( int y = 0; y < 4; y++ )
+      {
+         if ( pChessFill->m_Board[x][y] == Empty )
+            allSpotsFilled = 0;
+      }
+   }
+
+   if ( allSpotsFilled )
+      return GameWon;
+
+   int validPiecePlacements = 0;
+   for ( int x = 0; x < 4; x++ )
+   {
+      for ( int y = 0; y < 4; y++ )
+      {
+         if ( IsValidPiecePlacement( pChessFill, x, y ) == 1 )
+         {
+            validPiecePlacements = 1;
+            break;
+         }
+      }
+   }
+
+   return validPiecePlacements ? GameInProgress : GameLost;
 }

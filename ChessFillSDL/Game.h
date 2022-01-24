@@ -13,7 +13,7 @@ struct Game
 {
    struct ChessFillLib* m_Chess;
    //struct Config* m_pConfig;//Does not own
-   int m_bWon;
+   enum GameStatus m_eGameStatus;
    //struct Metrics* m_pMetrics;
    //struct Piece* m_apPieces;
    //struct Selector* m_pSelector;
@@ -29,6 +29,7 @@ struct Game
 void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Surface* pScreen);
 void FreeGame(struct Game** ppGame);
 int GameLoop(struct Game* pGame);
+void RestartGame( struct Game* pGame );
 int GameShouldQuit(struct Game* pMenu);
 
 #endif

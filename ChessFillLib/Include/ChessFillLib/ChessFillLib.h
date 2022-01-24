@@ -12,6 +12,13 @@ enum PieceType
    King
 };
 
+enum GameStatus
+{
+   GameInProgress,
+   GameLost,
+   GameWon
+};
+
 struct ChessFillLib
 {
    enum PieceType m_Board[4][4];
@@ -28,10 +35,12 @@ struct ChessFillLib
 int ChessFillLibCreate( struct ChessFillLib** api );
 int ChessFillLibFree( struct ChessFillLib** api );
 
+void Restart( struct ChessFillLib* pChessFill );
 enum PieceType GetLastPiece( struct ChessFillLib* pChessFill );
 enum PieceType GetPieceAt( struct ChessFillLib* pChessFill, int x, int y );
 int IsValidPiecePlacement( struct ChessFillLib* pChessFill, int x, int y );
 int PlaceNextPieceAt( struct ChessFillLib* pChessFill, int x, int y );
 int PlacesRemaining( struct ChessFillLib* pChessFill );
+enum GameStatus GetGameStatus( struct ChessFillLib* pChessFill );
 
 #endif

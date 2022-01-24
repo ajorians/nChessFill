@@ -12,7 +12,6 @@ void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Sur
    struct Game* pGame = *ppGame;
    ChessFillLibCreate(&(pGame->m_Chess));
    //pGame->m_pConfig = pConfig;
-   //pGame->m_bWon = IsCrossGameOver(pGame->m_Cross);
 
 #ifdef _TINSPIRE
    pGame->m_pYouWinGraphic = nSDL_LoadImage(image_YouWin);
@@ -30,8 +29,8 @@ void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Sur
    pGame->m_bShouldQuit = 0;
 
    pGame->m_pFont = LoadFont("ARIAL.TTF", NSDL_FONT_THIN, 255/*R*/, 0/*G*/, 0/*B*/, 12);
-   pGame->m_nX = 0;
-   pGame->m_nY = 0;
+
+   RestartGame( pGame );
 }
 
 void FreeGame(struct Game** ppGame)
@@ -116,14 +115,20 @@ void DrawBoard(struct Game* pGame)
    //Draw selector
    //DrawSelector(pGame->m_pSelector);
    
-   /*if( pGame->m_bWon == 1 ) {
-      SDL_Rect rectYouWin;
+   if ( pGame->m_eGameStatus == GameLost )
+   {
+      DrawText( pGame->m_pScreen, pGame->m_pFont, 100, 100, "Game over.  Press key to try again", 255, 0, 255 );
+   }
+   else if( pGame->m_eGameStatus == GameWon )
+   {
+      DrawText( pGame->m_pScreen, pGame->m_pFont, 100, 100, "You Won!", 255, 0, 255 );
+      /*SDL_Rect rectYouWin;
       rectYouWin.x = (SCREEN_WIDTH - pGame->m_pYouWinGraphic->w)/2;
       rectYouWin.y = (SCREEN_HEIGHT - pGame->m_pYouWinGraphic->h)/2;
       rectYouWin.w = pGame->m_pYouWinGraphic->w;
       rectYouWin.h = pGame->m_pYouWinGraphic->h;
-      SDL_BlitSurface(pGame->m_pYouWinGraphic, NULL, pGame->m_pScreen, &rectYouWin);
-   }*/
+      SDL_BlitSurface(pGame->m_pYouWinGraphic, NULL, pGame->m_pScreen, &rectYouWin);*/
+   }
 #endif
    
    SDL_UpdateRect(pGame->m_pScreen, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -142,7 +147,7 @@ int GamePollEvents(struct Game* pGame)
 
                case SDLK_UP:
                case SDLK_8:
-		  if( pGame->m_bWon != 1 ) {
+		  if( pGame->m_eGameStatus == GameInProgress ) {
            if ( pGame->m_nY > 0 )
            {
               pGame->m_nY--;
@@ -153,7 +158,7 @@ int GamePollEvents(struct Game* pGame)
 
 	       case SDLK_DOWN:
                case SDLK_2:
-		  if( pGame->m_bWon != 1 ) {
+		  if( pGame->m_eGameStatus == GameInProgress ) {
            if ( pGame->m_nY < 3 )
            {
               pGame->m_nY++;
@@ -164,7 +169,7 @@ int GamePollEvents(struct Game* pGame)
 
                case SDLK_LEFT:
                case SDLK_4:
-		  if( pGame->m_bWon != 1 ) {
+		  if( pGame->m_eGameStatus == GameInProgress ) {
            if ( pGame->m_nX > 0 )
            {
               pGame->m_nX--;
@@ -175,7 +180,7 @@ int GamePollEvents(struct Game* pGame)
 
                case SDLK_RIGHT:
                case SDLK_6:
-		  if( pGame->m_bWon != 1 ) {
+		  if( pGame->m_eGameStatus == GameInProgress ) {
            if ( pGame->m_nX < 3 )
            {
               pGame->m_nX++;
@@ -187,12 +192,15 @@ int GamePollEvents(struct Game* pGame)
                case SDLK_RETURN:
                case SDLK_LCTRL:
                case SDLK_RCTRL:
-		  if( pGame->m_bWon != 1 ) {
+		  if( pGame->m_eGameStatus == GameInProgress ) {
            PlaceNextPieceAt( pGame->m_Chess, pGame->m_nX, pGame->m_nY );
-                     //ToggleCrossCellValue(pGame->m_Cross, GetCurrentX(pGame->m_pSelector), GetCurrentY(pGame->m_pSelector));
 
-		     //pGame->m_bWon = IsCrossGameOver(pGame->m_Cross);
+		     pGame->m_eGameStatus = GetGameStatus(pGame->m_Chess);
 		  }
+        else
+        {
+           RestartGame( pGame );
+        }
                   break;
 
                default:
@@ -215,6 +223,14 @@ int GameLoop(struct Game* pGame)
    SDL_Delay(30);
 
    return 1;
+}
+
+void RestartGame( struct Game* pGame )
+{
+   Restart( pGame->m_Chess );
+   pGame->m_eGameStatus = GetGameStatus( pGame->m_Chess );
+   pGame->m_nX = 0;
+   pGame->m_nY = 0;
 }
 
 int GameShouldQuit(struct Game* pGame)

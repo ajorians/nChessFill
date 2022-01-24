@@ -58,6 +58,8 @@ void FreeMainMenu(struct MainMenu** ppMenu)
 
 enum MainMenuDecision PollEvents(struct MainMenu* pMenu)
 {
+   rand();//I don't think we can use the clock to seed the random
+
    SDL_Event event;
    while( SDL_PollEvent( &event ) )
    {
