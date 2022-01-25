@@ -17,7 +17,7 @@ int TestConstruction()
    return TEST_SUCCEEDED;
 }
 
-int TestGetCurrentPiece()
+int TestGetLastPiece()
 {
    struct ChessFillLib* pChessFillLib = NULL;
 
@@ -26,7 +26,7 @@ int TestGetCurrentPiece()
       return TEST_FAILED;
    }
 
-   enum PieceType ePiece = GetCurrentPiece( pChessFillLib );
+   enum PieceType ePiece = GetLastPiece( pChessFillLib );
    if( ePiece == Empty )
    {
       return TEST_FAILED;
@@ -40,7 +40,7 @@ typedef int (*testfunc)();
 testfunc g_Tests[] =
 {
    TestConstruction,
-   TestGetCurrentPiece
+   TestGetLastPiece
 };
 
 void RunTests()

@@ -3,42 +3,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum PieceType PickNewCurrentPiece( struct ChessFillLib* pChessFill )
+enum PieceType PickNewCurrentPiece( struct ChessFillLib* pChessFill, int* pIndex )
 {
    enum PieceType ePieceType = Empty;
-   while ( 1 )
+   while ( ePieceType == Empty )
    {
       int index = rand() % 16;
 
-      if ( index >= 0 && index < 8 )
+      if ( pChessFill->m_PieceStatus[index] == PieceNotPlayed )
       {
-         ePieceType = Pawn;
+         ePieceType = pChessFill->m_Pieces[index];
+         if ( pIndex ) *pIndex = index;
       }
-      else if ( index >= 8 && index < 10 )
-      {
-         ePieceType = Rook;
-      }
-      else if ( index >= 10 && index < 12 )
-      {
-         ePieceType = Knight;
-      }
-      else if ( index >= 12 && index < 14 )
-      {
-         ePieceType = Bishop;
-      }
-      else if ( index >= 14 && index < 15 )
-      {
-         ePieceType = Queen;
-      }
-      else if ( index >= 15 )
-      {
-         ePieceType = King;
-      }
-
-      if ( pChessFill->m_PiecesRemaining[ePieceType] <= 0 )
-         continue;
-
-      break;
    }
 
    return ePieceType;
@@ -79,12 +55,17 @@ void Restart( struct ChessFillLib* pChessFill )
       }
    }
 
-   pChessFill->m_PiecesRemaining[Pawn] = 8;
-   pChessFill->m_PiecesRemaining[Rook] = 2;
-   pChessFill->m_PiecesRemaining[Knight] = 2;
-   pChessFill->m_PiecesRemaining[Bishop] = 2;
-   pChessFill->m_PiecesRemaining[Queen] = 1;
-   pChessFill->m_PiecesRemaining[King] = 1;
+   enum PieceType initialPieces[16] =
+   {
+      Pawn,Pawn,Pawn,Pawn,Pawn,Pawn,Pawn,Pawn,
+      Rook,Knight,Bishop,Queen,King,Bishop,Knight,Rook
+   };
+
+   for ( int i = 0; i < 16; i++ )
+   {
+      pChessFill->m_Pieces[i] = initialPieces[i];
+      pChessFill->m_PieceStatus[i] = PieceNotPlayed;
+   }
 
    PlaceNextPieceAt( pChessFill, rand() % 4, 2 + ( rand() % 2 ) );
 }
@@ -229,9 +210,16 @@ int PlaceNextPieceAt( struct ChessFillLib* pChessFill, int x, int y )
       return 0;
    }
 
-   enum PieceType placingPiece = PickNewCurrentPiece( pChessFill );
+   for ( int i = 0; i < 16; i++ )
+   {
+      if ( pChessFill->m_PieceStatus[i] == PieceCurrentlyPlaying )
+         pChessFill->m_PieceStatus[i] = PieceWasPlayed;
+   }
 
-   pChessFill->m_PiecesRemaining[placingPiece]--;
+   int index = 0;
+   enum PieceType placingPiece = PickNewCurrentPiece( pChessFill, &index );
+
+   pChessFill->m_PieceStatus[index] = PieceCurrentlyPlaying;
 
    if ( placingPiece == Pawn && y == 0 )
    {
@@ -248,12 +236,35 @@ int PlaceNextPieceAt( struct ChessFillLib* pChessFill, int x, int y )
 
 int PlacesRemaining( struct ChessFillLib* pChessFill )
 {
-   return pChessFill->m_PiecesRemaining[Pawn] +
-      pChessFill->m_PiecesRemaining[Rook] +
-      pChessFill->m_PiecesRemaining[Knight] +
-      pChessFill->m_PiecesRemaining[Bishop] +
-      pChessFill->m_PiecesRemaining[Queen] +
-      pChessFill->m_PiecesRemaining[King];
+   int placesRemaining = 0;
+   for ( int y=0; y<4; y++ )
+   {
+      for ( int x = 0; x < 4; x++ )
+      {
+         if ( GetPieceAt( pChessFill, x, y ) == Empty )
+            placesRemaining++;
+      }
+   }
+   return placesRemaining;
+}
+
+enum PiecePlayedStatus GetPiecePlayStatus( struct ChessFillLib* pChessFill, enum PieceType ePieceType, int index )
+{
+   int pieceIndex = 0;
+   for ( int i = 0; i < 16; i++ )
+   {
+      if ( pChessFill->m_Pieces[i] == ePieceType )
+      {
+         if ( index == pieceIndex )
+         {
+            return pChessFill->m_PieceStatus[i];
+         }
+
+         pieceIndex++;
+      }
+   }
+
+   return PieceNotPlayed;
 }
 
 enum GameStatus GetGameStatus( struct ChessFillLib* pChessFill )

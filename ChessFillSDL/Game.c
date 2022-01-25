@@ -63,6 +63,34 @@ void DrawBoard(struct Game* pGame)
 
    SDL_FillRect(pGame->m_pScreen, &rectDst, SDL_MapRGB(pGame->m_pScreen->format, 255, 255, 255));
 
+   char buffer[25];
+   int piecesRemain = PlacesRemaining( pGame->m_Chess );
+   IntToA( buffer, 25, piecesRemain );
+   int numCharacters = piecesRemain >= 10 ? 2 : 1;
+   StringCopy( buffer + numCharacters, 23, " pieces remain" );
+
+   DrawText( pGame->m_pScreen, pGame->m_pFont, 10, 10, buffer, 0, 0, 255);
+
+   for ( int i = 0; i < 8; i++ )
+   {
+      DrawText( pGame->m_pScreen, pGame->m_pFont, i * 20, 120, "P", 0, 0, 255);
+      enum PlayStatus playStatus = GetPiecePlayStatus( pGame->m_Chess, Pawn, i );
+      if ( playStatus == PieceWasPlayed )
+      {
+         SDL_Rect r = { i * 20, 120, 10, 10 };
+         SDL_FillRect( pGame->m_pScreen, &r, SDL_MapRGB( pGame->m_pScreen->format, 0, 0, 0 ) );
+      }
+   }
+
+   DrawText( pGame->m_pScreen, pGame->m_pFont, 0 * 20, 140, "R", 0, 0, 255);
+   DrawText( pGame->m_pScreen, pGame->m_pFont, 1 * 20, 140, "k", 0, 0, 255);
+   DrawText( pGame->m_pScreen, pGame->m_pFont, 2 * 20, 140, "B", 0, 0, 255);
+   DrawText( pGame->m_pScreen, pGame->m_pFont, 3 * 20, 140, "Q", 0, 0, 255);
+   DrawText( pGame->m_pScreen, pGame->m_pFont, 4 * 20, 140, "K", 0, 0, 255);
+   DrawText( pGame->m_pScreen, pGame->m_pFont, 5 * 20, 140, "B", 0, 0, 255);
+   DrawText( pGame->m_pScreen, pGame->m_pFont, 6 * 20, 140, "k", 0, 0, 255);
+   DrawText( pGame->m_pScreen, pGame->m_pFont, 7 * 20, 140, "R", 0, 0, 255);
+
    //DrawBackground(pGame->m_pBackground);
 #if 1
    for ( int x = 0; x < 4; x++ )
@@ -74,7 +102,7 @@ void DrawBoard(struct Game* pGame)
          {
             if ( IsValidPiecePlacement( pGame->m_Chess, x, y ) )
             {
-               DrawText( pGame->m_pScreen, pGame->m_pFont, x * 20, y * 20, "X", 0, 255, 255);
+               DrawText( pGame->m_pScreen, pGame->m_pFont, x * 20, y * 20 + 25, "X", 0, 255, 255);
             }
             continue;
          }
@@ -106,11 +134,11 @@ void DrawBoard(struct Game* pGame)
          }
          
 
-         DrawText( pGame->m_pScreen, pGame->m_pFont, x * 20, y * 20, buffer, 0, 0, 255 );
+         DrawText( pGame->m_pScreen, pGame->m_pFont, x * 20, y * 20 + 25, buffer, 0, 0, 255 );
       }
    }
 
-   DrawText( pGame->m_pScreen, pGame->m_pFont, pGame->m_nX * 20, pGame->m_nY * 20, "Z", 255, 0, 255 );
+   DrawText( pGame->m_pScreen, pGame->m_pFont, pGame->m_nX * 20, pGame->m_nY * 20 + 25, "Z", 255, 0, 255 );
 
    //Draw selector
    //DrawSelector(pGame->m_pSelector);
