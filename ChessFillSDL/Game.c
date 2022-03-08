@@ -12,6 +12,7 @@ void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Sur
    struct Game* pGame = *ppGame;
    ChessFillLibCreate(&(pGame->m_Chess));
    CreateUsedPieceIndicator( &( pGame->m_pUsedPieceIndicator ), pGame->m_Chess );
+   CreateBoard( &( pGame->m_pBoard ), pGame->m_Chess );
    //pGame->m_pConfig = pConfig;
 
 #ifdef _TINSPIRE
@@ -45,6 +46,7 @@ void FreeGame(struct Game** ppGame)
    //FreeBackground(&pGame->m_pBackground);
    //FreeMetrics(&pGame->m_pMetrics);
    FreeUsedPieceIndicator( &pGame->m_pUsedPieceIndicator );
+   FreeBoard( &pGame->m_pBoard );
 
    //pGame->m_pConfig = NULL;//Does not own
    pGame->m_pScreen = NULL;//Does not own
@@ -55,7 +57,7 @@ void FreeGame(struct Game** ppGame)
    *ppGame = NULL;
 }
 
-void DrawBoard(struct Game* pGame)
+void DrawGameBoard(struct Game* pGame)
 {
    SDL_Rect rectDst;
    rectDst.w = SCREEN_WIDTH;
@@ -64,6 +66,7 @@ void DrawBoard(struct Game* pGame)
    rectDst.y = 0;
 
    SDL_FillRect(pGame->m_pScreen, &rectDst, SDL_MapRGB(pGame->m_pScreen->format, 255, 255, 255));
+   //DrawBackground(pGame->m_pBackground);
 
    char buffer[25];
    int piecesRemain = PlacesRemaining( pGame->m_Chess );
@@ -74,53 +77,7 @@ void DrawBoard(struct Game* pGame)
    DrawText( pGame->m_pScreen, pGame->m_pFont, 10, 10, buffer, 0, 0, 255);
 
    DrawUsedPieceIndicator( pGame->m_pUsedPieceIndicator, pGame->m_pScreen );
-
-   //DrawBackground(pGame->m_pBackground);
-#if 1
-   for ( int x = 0; x < 4; x++ )
-   {
-      for ( int y = 0; y < 4; y++ )
-      {
-         enum PieceType piece = GetPieceAt( pGame->m_Chess, x, y );
-         if ( piece == Empty )
-         {
-            if ( IsValidPiecePlacement( pGame->m_Chess, x, y ) )
-            {
-               DrawText( pGame->m_pScreen, pGame->m_pFont, x * 20, y * 20 + 25, "X", 0, 255, 255);
-            }
-            continue;
-         }
-
-         char buffer[2];
-         switch ( piece )
-         {
-            case Empty:
-               strcpy( buffer, "X" );
-               break;
-            case Pawn:
-               strcpy( buffer, "P" );
-               break;
-            case Rook:
-               strcpy( buffer, "R" );
-               break;
-            case Knight:
-               strcpy( buffer, "k" );
-               break;
-            case Bishop:
-               strcpy( buffer, "B" );
-               break;
-            case Queen:
-               strcpy( buffer, "Q" );
-               break;
-            case King:
-               strcpy( buffer, "K" );
-               break;
-         }
-         
-
-         DrawText( pGame->m_pScreen, pGame->m_pFont, x * 20, y * 20 + 25, buffer, 0, 0, 255 );
-      }
-   }
+   DrawBoard( pGame->m_pBoard, pGame->m_pScreen );
 
    DrawText( pGame->m_pScreen, pGame->m_pFont, pGame->m_nX * 20, pGame->m_nY * 20 + 25, "Z", 255, 0, 255 );
 
@@ -141,8 +98,7 @@ void DrawBoard(struct Game* pGame)
       rectYouWin.h = pGame->m_pYouWinGraphic->h;
       SDL_BlitSurface(pGame->m_pYouWinGraphic, NULL, pGame->m_pScreen, &rectYouWin);*/
    }
-#endif
-   
+
    SDL_UpdateRect(pGame->m_pScreen, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -230,7 +186,7 @@ int GameLoop(struct Game* pGame)
    if( GamePollEvents(pGame) == 0 )
       return 0;
 
-   DrawBoard(pGame);
+   DrawGameBoard(pGame);
 
    SDL_Delay(30);
 
