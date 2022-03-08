@@ -27,29 +27,73 @@ void FreeUsedPieceIndicator(struct UsedPieceIndicator** ppUsedPieceIndicator)
    *ppUsedPieceIndicator = NULL;
 }
 
-void DrawUsedPieceIndicator( struct UsedPieceIndicator* pUsedPieceIndicator, struct SDL_Surface* pScreen )
+void DrawPieceUsed( struct UsedPieceIndicator* pUsedPieceIndicator, struct SDL_Surface* pScreen, int row, int col )
+{
+   int usedPieceIndicatorY = GetUsedPieceIndicatorY( pUsedPieceIndicator->m_pMetrics );
+   
+   int piecePosX = col * 20;
+   int piecePosY = usedPieceIndicatorY + row * 20;
+
+   SDL_Rect r = { piecePosX, piecePosY, 10, 10 };
+   SDL_FillRect( pScreen, &r, SDL_MapRGB( pScreen->format, 0, 0, 0 ) );
+}
+
+void DrawPiece( struct UsedPieceIndicator* pUsedPieceIndicator, struct SDL_Surface* pScreen, enum PieceType pieceType, int pieceIndex, int row, int col )
 {
    int usedPieceIndicatorY = GetUsedPieceIndicatorY( pUsedPieceIndicator->m_pMetrics );
 
-   for ( int i = 0; i < 8; i++ )
+   int piecePosX = col * 20;
+   int piecePosY = usedPieceIndicatorY + row * 20;
+
+   char buffer[2];
+   switch ( pieceType )
    {
-      DrawText( pScreen, pUsedPieceIndicator->m_pFont, i * 20, usedPieceIndicatorY, "P", 0, 0, 255);
-      enum PlayStatus playStatus = GetPiecePlayStatus( pUsedPieceIndicator->m_Chess, Pawn, i );
-      if ( playStatus == PieceWasPlayed )
-      {
-         SDL_Rect r = { i * 20, 120, 10, 10 };
-         SDL_FillRect( pScreen, &r, SDL_MapRGB( pScreen->format, 0, 0, 0 ) );
-      }
+      case Empty:
+         strcpy( buffer, "X" );
+         break;
+      case Pawn:
+         strcpy( buffer, "P" );
+         break;
+      case Rook:
+         strcpy( buffer, "R" );
+         break;
+      case Knight:
+         strcpy( buffer, "k" );
+         break;
+      case Bishop:
+         strcpy( buffer, "B" );
+         break;
+      case Queen:
+         strcpy( buffer, "Q" );
+         break;
+      case King:
+         strcpy( buffer, "K" );
+         break;
    }
 
-   int secondRowUsedPieceIndicator = usedPieceIndicatorY + 20;
-   DrawText( pScreen, pUsedPieceIndicator->m_pFont, 0 * 20, secondRowUsedPieceIndicator, "R", 0, 0, 255);
-   DrawText( pScreen, pUsedPieceIndicator->m_pFont, 1 * 20, secondRowUsedPieceIndicator, "k", 0, 0, 255);
-   DrawText( pScreen, pUsedPieceIndicator->m_pFont, 2 * 20, secondRowUsedPieceIndicator, "B", 0, 0, 255);
-   DrawText( pScreen, pUsedPieceIndicator->m_pFont, 3 * 20, secondRowUsedPieceIndicator, "Q", 0, 0, 255);
-   DrawText( pScreen, pUsedPieceIndicator->m_pFont, 4 * 20, secondRowUsedPieceIndicator, "K", 0, 0, 255);
-   DrawText( pScreen, pUsedPieceIndicator->m_pFont, 5 * 20, secondRowUsedPieceIndicator, "B", 0, 0, 255);
-   DrawText( pScreen, pUsedPieceIndicator->m_pFont, 6 * 20, secondRowUsedPieceIndicator, "k", 0, 0, 255);
-   DrawText( pScreen, pUsedPieceIndicator->m_pFont, 7 * 20, secondRowUsedPieceIndicator, "R", 0, 0, 255);
+   DrawText( pScreen, pUsedPieceIndicator->m_pFont, piecePosX, piecePosY, buffer, 0, 0, 255);
+
+   enum PlayStatus playStatus = GetPiecePlayStatus( pUsedPieceIndicator->m_Chess, pieceType, pieceIndex );
+   if ( playStatus == PieceWasPlayed )
+   {
+      DrawPieceUsed( pUsedPieceIndicator, pScreen, row, col );
+   }
+}
+
+void DrawUsedPieceIndicator( struct UsedPieceIndicator* pUsedPieceIndicator, struct SDL_Surface* pScreen )
+{
+   for ( int i = 0; i < 8; i++ )
+   {
+      DrawPiece( pUsedPieceIndicator, pScreen, Pawn, i, 0, i );
+   }
+
+   DrawPiece( pUsedPieceIndicator, pScreen, Rook, 0, 1, 0 );
+   DrawPiece( pUsedPieceIndicator, pScreen, Knight, 0, 1, 1 );
+   DrawPiece( pUsedPieceIndicator, pScreen, Bishop, 0, 1, 2 );
+   DrawPiece( pUsedPieceIndicator, pScreen, Queen, 0, 1, 3 );
+   DrawPiece( pUsedPieceIndicator, pScreen, King, 0, 1, 4 );
+   DrawPiece( pUsedPieceIndicator, pScreen, Bishop, 1, 1, 5 );
+   DrawPiece( pUsedPieceIndicator, pScreen, Knight, 1, 1, 6 );
+   DrawPiece( pUsedPieceIndicator, pScreen, Rook, 1, 1, 7 );
 }
 
