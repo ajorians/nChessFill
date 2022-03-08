@@ -23,10 +23,7 @@ void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Sur
 
    pGame->m_pScreen = pScreen;
    //CreateBackground(&(pGame->m_pBackground), pGame->m_pScreen, pGame->m_pConfig, 1);
-   //pGame->m_pMetrics = NULL;
-   //CreateMetrics(&pGame->m_pMetrics, pGame->m_Cross);
 
-   //pGame->m_pSelector = NULL;
    CreateSelector(&pGame->m_pSelector, pGame->m_pScreen,/* pGame->m_pConfig,*/ pGame->m_pMetrics, pGame->m_Chess);
 
    pGame->m_bShouldQuit = 0;
