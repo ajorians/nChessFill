@@ -4,6 +4,7 @@
 #include <ChessFillLib/ChessFillLib.h>
 #include <SDL/SDL.h>
 #include "Font.h"
+#include "Metrics.h"
 
 struct Board
 {

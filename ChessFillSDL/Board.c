@@ -29,16 +29,23 @@ void FreeBoard(struct Board** ppBoard)
 
 void DrawBoard( struct Board* pBoard, struct SDL_Surface* pScreen )
 {
+   int kludgeX = 7;
+   int kludgeY = 3;//If using graphics can remove this later
+
    for ( int x = 0; x < 4; x++ )
    {
       for ( int y = 0; y < 4; y++ )
       {
          enum PieceType piece = GetPieceAt( pBoard->m_Chess, x, y );
+         int pieceLeft = GetPieceLeft( pBoard->m_pMetrics, x, y );
+         int pieceTop = GetPieceTop( pBoard->m_pMetrics, x, y );
+
          if ( piece == Empty )
          {
             if ( IsValidPiecePlacement( pBoard->m_Chess, x, y ) )
             {
-               DrawText( pScreen, pBoard->m_pFont, x * 20, y * 20 + 25, "X", 0, 255, 255);
+               
+               DrawText( pScreen, pBoard->m_pFont, pieceLeft + kludgeX, pieceTop + kludgeY, "X", 0, 255, 255);
             }
             continue;
          }
@@ -69,8 +76,7 @@ void DrawBoard( struct Board* pBoard, struct SDL_Surface* pScreen )
                break;
          }
 
-
-         DrawText( pScreen, pBoard->m_pFont, x * 20, y * 20 + 25, buffer, 0, 0, 255 );
+         DrawText( pScreen, pBoard->m_pFont, pieceLeft + kludgeX, pieceTop + kludgeY, buffer, 0, 0, 255 );
       }
    }
 }

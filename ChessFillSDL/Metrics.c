@@ -27,3 +27,24 @@ int GetUsedPieceIndicatorY( struct Metrics* pMetrics )
    return pMetrics->m_UsedPieceIndicatorY;
 }
 
+int GetPieceLeft( struct Metrics* pMetrics, int x, int y )
+{
+   return x * 20;
+}
+
+int GetPieceTop( struct Metrics* pMetrics, int x, int y )
+{
+   return y * 20 + 25;
+}
+
+int GetPieceWidth( struct Metrics* pMetrics, int x, int y )
+{
+   return 20;
+}
+
+int GetPieceHeight( struct Metrics* pMetrics, int x, int y )
+{
+   return 20;
+}
+
+

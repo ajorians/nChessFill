@@ -27,7 +27,7 @@ void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Sur
    //CreateMetrics(&pGame->m_pMetrics, pGame->m_Cross);
 
    //pGame->m_pSelector = NULL;
-   //CreateSelector(&pGame->m_pSelector, pGame->m_pScreen, pGame->m_pConfig, pGame->m_pMetrics, pGame->m_Cross);
+   CreateSelector(&pGame->m_pSelector, pGame->m_pScreen,/* pGame->m_pConfig,*/ pGame->m_pMetrics, pGame->m_Chess);
 
    pGame->m_bShouldQuit = 0;
 
@@ -43,9 +43,10 @@ void FreeGame(struct Game** ppGame)
 #ifdef _TINSPIRE
    SDL_FreeSurface(pGame->m_pYouWinGraphic);
 #endif
-   //FreeSelector(&pGame->m_pSelector);
+
    //FreeBackground(&pGame->m_pBackground);
    FreeUsedPieceIndicator( &pGame->m_pUsedPieceIndicator );
+   FreeSelector(&pGame->m_pSelector);
    FreeBoard( &pGame->m_pBoard );
    FreeMetrics(&pGame->m_pMetrics);
 
@@ -80,10 +81,8 @@ void DrawGameBoard(struct Game* pGame)
    DrawUsedPieceIndicator( pGame->m_pUsedPieceIndicator, pGame->m_pScreen );
    DrawBoard( pGame->m_pBoard, pGame->m_pScreen );
 
-   DrawText( pGame->m_pScreen, pGame->m_pFont, pGame->m_nX * 20, pGame->m_nY * 20 + 25, "Z", 255, 0, 255 );
-
    //Draw selector
-   //DrawSelector(pGame->m_pSelector);
+   DrawSelector(pGame->m_pSelector);
    
    if ( pGame->m_eGameStatus == GameLost )
    {
@@ -117,44 +116,28 @@ int GamePollEvents(struct Game* pGame)
                case SDLK_UP:
                case SDLK_8:
 		  if( pGame->m_eGameStatus == GameInProgress ) {
-           if ( pGame->m_nY > 0 )
-           {
-              pGame->m_nY--;
-           }
-                     //Move(pGame->m_pSelector, Up);
+           Move(pGame->m_pSelector, Up);
 		  }
                   break;
 
 	       case SDLK_DOWN:
                case SDLK_2:
 		  if( pGame->m_eGameStatus == GameInProgress ) {
-           if ( pGame->m_nY < 3 )
-           {
-              pGame->m_nY++;
-           }
-                     //Move(pGame->m_pSelector, Down);
+           Move(pGame->m_pSelector, Down);
 		  }
                   break;
 
                case SDLK_LEFT:
                case SDLK_4:
 		  if( pGame->m_eGameStatus == GameInProgress ) {
-           if ( pGame->m_nX > 0 )
-           {
-              pGame->m_nX--;
-           }
-                     //Move(pGame->m_pSelector, Left);
+           Move(pGame->m_pSelector, Left);
 		  }
                   break;
 
                case SDLK_RIGHT:
                case SDLK_6:
 		  if( pGame->m_eGameStatus == GameInProgress ) {
-           if ( pGame->m_nX < 3 )
-           {
-              pGame->m_nX++;
-           }
-                     //Move(pGame->m_pSelector, Right);
+           Move(pGame->m_pSelector, Right);
 		  }
                   break;
 
@@ -162,7 +145,7 @@ int GamePollEvents(struct Game* pGame)
                case SDLK_LCTRL:
                case SDLK_RCTRL:
 		  if( pGame->m_eGameStatus == GameInProgress ) {
-           PlaceNextPieceAt( pGame->m_Chess, pGame->m_nX, pGame->m_nY );
+           PlaceNextPieceAt( pGame->m_Chess, GetCurrentX( pGame->m_pSelector ), GetCurrentY( pGame->m_pSelector ) );
 
 		     pGame->m_eGameStatus = GetGameStatus(pGame->m_Chess);
 		  }
@@ -198,8 +181,7 @@ void RestartGame( struct Game* pGame )
 {
    Restart( pGame->m_Chess );
    pGame->m_eGameStatus = GetGameStatus( pGame->m_Chess );
-   pGame->m_nX = 0;
-   pGame->m_nY = 0;
+   ResetSelectorPosition( pGame->m_pSelector );
 }
 
 int GameShouldQuit(struct Game* pGame)

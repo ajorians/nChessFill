@@ -6,7 +6,7 @@
 //#include "Config.h"
 #include "Metrics.h"
 //#include "Piece.h"
-//#include "Selector.h"
+#include "Selector.h"
 #include "UsedPieceIndicator.h"
 #include "Board.h"
 #include "Font.h"
@@ -18,7 +18,7 @@ struct Game
    enum GameStatus m_eGameStatus;
    struct Metrics* m_pMetrics;
    //struct Piece* m_apPieces;
-   //struct Selector* m_pSelector;
+   struct Selector* m_pSelector;
    struct UsedPieceIndicator* m_pUsedPieceIndicator;
    struct Board* m_pBoard;
    int m_bShouldQuit;
@@ -26,8 +26,6 @@ struct Game
    struct SDL_Surface* m_pScreen;//Does not own
    //struct Background* m_pBackground;
    Font *m_pFont;
-   int m_nX;
-   int m_nY;
 };
 
 void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Surface* pScreen);
