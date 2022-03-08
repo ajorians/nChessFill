@@ -11,6 +11,7 @@ void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Sur
    *ppGame = malloc(sizeof(struct Game));
    struct Game* pGame = *ppGame;
    ChessFillLibCreate(&(pGame->m_Chess));
+   CreateUsedPieceIndicator( &( pGame->m_pUsedPieceIndicator ), pGame->m_Chess );
    //pGame->m_pConfig = pConfig;
 
 #ifdef _TINSPIRE
@@ -43,6 +44,7 @@ void FreeGame(struct Game** ppGame)
    //FreeSelector(&pGame->m_pSelector);
    //FreeBackground(&pGame->m_pBackground);
    //FreeMetrics(&pGame->m_pMetrics);
+   FreeUsedPieceIndicator( &pGame->m_pUsedPieceIndicator );
 
    //pGame->m_pConfig = NULL;//Does not own
    pGame->m_pScreen = NULL;//Does not own
@@ -71,25 +73,7 @@ void DrawBoard(struct Game* pGame)
 
    DrawText( pGame->m_pScreen, pGame->m_pFont, 10, 10, buffer, 0, 0, 255);
 
-   for ( int i = 0; i < 8; i++ )
-   {
-      DrawText( pGame->m_pScreen, pGame->m_pFont, i * 20, 120, "P", 0, 0, 255);
-      enum PlayStatus playStatus = GetPiecePlayStatus( pGame->m_Chess, Pawn, i );
-      if ( playStatus == PieceWasPlayed )
-      {
-         SDL_Rect r = { i * 20, 120, 10, 10 };
-         SDL_FillRect( pGame->m_pScreen, &r, SDL_MapRGB( pGame->m_pScreen->format, 0, 0, 0 ) );
-      }
-   }
-
-   DrawText( pGame->m_pScreen, pGame->m_pFont, 0 * 20, 140, "R", 0, 0, 255);
-   DrawText( pGame->m_pScreen, pGame->m_pFont, 1 * 20, 140, "k", 0, 0, 255);
-   DrawText( pGame->m_pScreen, pGame->m_pFont, 2 * 20, 140, "B", 0, 0, 255);
-   DrawText( pGame->m_pScreen, pGame->m_pFont, 3 * 20, 140, "Q", 0, 0, 255);
-   DrawText( pGame->m_pScreen, pGame->m_pFont, 4 * 20, 140, "K", 0, 0, 255);
-   DrawText( pGame->m_pScreen, pGame->m_pFont, 5 * 20, 140, "B", 0, 0, 255);
-   DrawText( pGame->m_pScreen, pGame->m_pFont, 6 * 20, 140, "k", 0, 0, 255);
-   DrawText( pGame->m_pScreen, pGame->m_pFont, 7 * 20, 140, "R", 0, 0, 255);
+   DrawUsedPieceIndicator( pGame->m_pUsedPieceIndicator, pGame->m_pScreen );
 
    //DrawBackground(pGame->m_pBackground);
 #if 1

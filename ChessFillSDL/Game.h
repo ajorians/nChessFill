@@ -7,6 +7,7 @@
 //#include "Metrics.h"
 //#include "Piece.h"
 //#include "Selector.h"
+#include "UsedPieceIndicator.h"
 #include "Font.h"
 
 struct Game
@@ -17,6 +18,7 @@ struct Game
    //struct Metrics* m_pMetrics;
    //struct Piece* m_apPieces;
    //struct Selector* m_pSelector;
+   struct UsedPieceIndicator* m_pUsedPieceIndicator;
    int m_bShouldQuit;
    //struct SDL_Surface* m_pYouWinGraphic;
    struct SDL_Surface* m_pScreen;//Does not own

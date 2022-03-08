@@ -30,6 +30,9 @@
     <ClCompile Include="Game.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UsedPieceIndicator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Replacements.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UsedPieceIndicator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
