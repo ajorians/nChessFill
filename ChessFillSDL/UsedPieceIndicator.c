@@ -29,9 +29,10 @@ void FreeUsedPieceIndicator(struct UsedPieceIndicator** ppUsedPieceIndicator)
 
 void DrawPieceUsed( struct UsedPieceIndicator* pUsedPieceIndicator, struct SDL_Surface* pScreen, int row, int col )
 {
+   int usedPieceIndicatorX = GetUsedPieceIndicatorX( pUsedPieceIndicator->m_pMetrics );
    int usedPieceIndicatorY = GetUsedPieceIndicatorY( pUsedPieceIndicator->m_pMetrics );
    
-   int piecePosX = col * 20;
+   int piecePosX = usedPieceIndicatorX + col * 20;
    int piecePosY = usedPieceIndicatorY + row * 20;
 
    SDL_Rect r = { piecePosX, piecePosY, 10, 10 };
@@ -40,9 +41,10 @@ void DrawPieceUsed( struct UsedPieceIndicator* pUsedPieceIndicator, struct SDL_S
 
 void DrawPiece( struct UsedPieceIndicator* pUsedPieceIndicator, struct SDL_Surface* pScreen, enum PieceType pieceType, int pieceIndex, int row, int col )
 {
+   int usedPieceIndicatorX = GetUsedPieceIndicatorX( pUsedPieceIndicator->m_pMetrics );
    int usedPieceIndicatorY = GetUsedPieceIndicatorY( pUsedPieceIndicator->m_pMetrics );
 
-   int piecePosX = col * 20;
+   int piecePosX = usedPieceIndicatorX + col * 20;
    int piecePosY = usedPieceIndicatorY + row * 20;
 
    char buffer[2];

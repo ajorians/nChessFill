@@ -73,7 +73,7 @@ void DrawGameBoard(struct Game* pGame)
    int numCharacters = piecesRemain >= 10 ? 2 : 1;
    StringCopy( buffer + numCharacters, 23, " pieces remain" );
 
-   DrawText( pGame->m_pScreen, pGame->m_pFont, 10, 10, buffer, 0, 0, 255);
+   DrawText( pGame->m_pScreen, pGame->m_pFont, GetRemainLabelX( pGame->m_pMetrics ), 10, buffer, 0, 0, 255);
 
    DrawUsedPieceIndicator( pGame->m_pUsedPieceIndicator, pGame->m_pScreen );
    DrawBoard( pGame->m_pBoard, pGame->m_pScreen );
