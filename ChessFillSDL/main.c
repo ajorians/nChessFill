@@ -9,6 +9,7 @@
 #include <SDL/SDL_ttf.h>
 #endif
 #include "Game.h"
+#include "Help.h"
 #include "MainMenu.h"
 #include "Replacements.h"
 
@@ -31,15 +32,6 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 
 int main( int argc, char* argv[] )
 {
-#ifdef _TINSPIRE
-   ArchiveSetCurrentDirectory( argv[0] );
-   if( argc != 2 ) {
-      if( !config_file_already_written() ) {
-         write_config_file();
-      }
-   }
-#endif
-
    printf("Initializing SDL.\n");
 
    /* Initialize the SDL library (starts the event loop) */
@@ -54,8 +46,6 @@ int main( int argc, char* argv[] )
 
    SDL_Surface* pScreen = NULL;
    pScreen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BIT_DEPTH, SCREEN_VIDEO_MODE);
-
-   //HSSetCurrentDirectory(argv[0]);
 
    if( pScreen == NULL )
    {
@@ -76,58 +66,31 @@ int main( int argc, char* argv[] )
    }
 #endif
 
-   //int nLevelNumber = -1;
-   //char strLevelData[2048];
-   //struct Config* pConfig = NULL;
-#ifdef _TINSPIRE
-   CreateConfig(&pConfig);
-#endif
    while(1) {
-      int bShowHelp = 0, bShowOptions = 0;
-      if( argc != 2 ) {
-         struct MainMenu* pMenu = NULL;
-         int bShouldQuit = 0;
-         CreateMainMenu(&pMenu/*, nLevelNumber, pConfig*/, pScreen);
-         while(MainMenuLoop(pMenu) != DecisionMade){}
-         bShouldQuit = MainMenuShouldQuit(pMenu);
-         /*bShowOptions = MainMenuShowOptions(pMenu);
-         bShowHelp = MainMenuShowHelp(pMenu);*/
-         FreeMainMenu(&pMenu);
+      int bShowHelp = 0;
 
-         if( bShouldQuit )
-            break;
-      }
-      /*else {
-         FILE *fp = fopen(argv[1], "r");
-         if (!fp) { return 0; }
-         struct stat filestat;
-         if (stat(argv[1],&filestat) == -1) { fclose(fp); return 0; }
+      struct MainMenu* pMenu = NULL;
+      int bShouldQuit = 0;
+      CreateMainMenu(&pMenu, pScreen);
+      while(MainMenuLoop(pMenu) != DecisionMade){}
+      bShouldQuit = MainMenuShouldQuit(pMenu);
+      bShowHelp = MainMenuShowHelp(pMenu);
+      FreeMainMenu(&pMenu);
 
-         fread(strLevelData, 1, filestat.st_size, fp);
+      if( bShouldQuit )
+         break;
 
-         strLevelData[filestat.st_size] = 0;
-
-         fclose(fp);
-      }*/
-
-      if( bShowOptions ) {
-        /* struct Options* pOptions = NULL;
-         CreateOptions(&pOptions, pConfig, pScreen);
-         while(OptionsLoop(pOptions)){}
-         FreeOptions(&pOptions);*/
-         continue;
-      }
-      else if( bShowHelp ) {
-         /*struct Help* pHelp = NULL;
+      if( bShowHelp ) {
+         struct Help* pHelp = NULL;
          CreateHelp(&pHelp, pScreen);
          while(HelpLoop(pHelp)){}
-         FreeHelp(&pHelp);*/
+         FreeHelp(&pHelp);
          continue;
       }
       else {
          struct Game* pGame = NULL;
          int bShouldQuit = 0;
-         CreateGame(&pGame/*, pConfig*/, pScreen);
+         CreateGame(&pGame, pScreen);
          while(GameLoop(pGame)){}
          bShouldQuit = GameShouldQuit(pGame);
          FreeGame(&pGame);

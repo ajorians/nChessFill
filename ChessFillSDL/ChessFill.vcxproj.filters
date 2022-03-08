@@ -42,6 +42,9 @@
     <ClCompile Include="Selector.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Help.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Replacements.h">
@@ -66,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Selector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Help.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
