@@ -5,13 +5,11 @@
 #include <os.h>
 #endif
 #include "SDL/SDL.h"
-//#include "Config.h"
 #include "Font.h"
 
 enum MenuChoice
 {
    Play,
-   Options,
    Help,
    Quit
 };
@@ -52,8 +50,6 @@ void CreateMainMenu(struct MainMenu** ppMenu/*, int nLevelNum, struct Config* pC
 void FreeMainMenu(struct MainMenu** ppMenu);
 enum MainMenuDecision MainMenuLoop(struct MainMenu* pMenu);
 int MainMenuShouldQuit(struct MainMenu* pMenu);
-//int MainMenuShowOptions(struct MainMenu* pMenu);
-//int MainMenuShowHelp(struct MainMenu* pMenu);
-//int MainMenuGetLevelNum(struct MainMenu* pMenu);
+int MainMenuShowHelp(struct MainMenu* pMenu);
 
 #endif
