@@ -172,6 +172,7 @@ xcopy /dy C:\Git\SDL\SDL_gfx\$(Platform)\$(Configuration)\*.dll $(OutDir)</Comma
     <ClCompile Include="Game.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="MainMenu.c" />
+    <ClCompile Include="Metrics.c" />
     <ClCompile Include="Replacements.c" />
     <ClCompile Include="UsedPieceIndicator.c" />
   </ItemGroup>
@@ -185,6 +186,7 @@ xcopy /dy C:\Git\SDL\SDL_gfx\$(Platform)\$(Configuration)\*.dll $(OutDir)</Comma
     <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Metrics.h" />
     <ClInclude Include="Replacements.h" />
     <ClInclude Include="UsedPieceIndicator.h" />
   </ItemGroup>

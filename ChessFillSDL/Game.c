@@ -11,8 +11,9 @@ void CreateGame(struct Game** ppGame/*, struct Config* pConfig*/, struct SDL_Sur
    *ppGame = malloc(sizeof(struct Game));
    struct Game* pGame = *ppGame;
    ChessFillLibCreate(&(pGame->m_Chess));
-   CreateUsedPieceIndicator( &( pGame->m_pUsedPieceIndicator ), pGame->m_Chess );
-   CreateBoard( &( pGame->m_pBoard ), pGame->m_Chess );
+   CreateMetrics( &( pGame->m_pMetrics ) );
+   CreateUsedPieceIndicator( &( pGame->m_pUsedPieceIndicator ), pGame->m_Chess, pGame->m_pMetrics );
+   CreateBoard( &( pGame->m_pBoard ), pGame->m_Chess, pGame->m_pMetrics );
    //pGame->m_pConfig = pConfig;
 
 #ifdef _TINSPIRE
@@ -44,9 +45,9 @@ void FreeGame(struct Game** ppGame)
 #endif
    //FreeSelector(&pGame->m_pSelector);
    //FreeBackground(&pGame->m_pBackground);
-   //FreeMetrics(&pGame->m_pMetrics);
    FreeUsedPieceIndicator( &pGame->m_pUsedPieceIndicator );
    FreeBoard( &pGame->m_pBoard );
+   FreeMetrics(&pGame->m_pMetrics);
 
    //pGame->m_pConfig = NULL;//Does not own
    pGame->m_pScreen = NULL;//Does not own

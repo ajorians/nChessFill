@@ -5,11 +5,12 @@
 #include "Board.h"
 #include "Replacements.h"
 
-void CreateBoard(struct Board** ppBoard, struct ChessFillLib* chess )
+void CreateBoard(struct Board** ppBoard, struct ChessFillLib* chess, struct Metrics* pMetrics )
 {
    *ppBoard = malloc(sizeof(struct Board));
    struct Board* pBoard = *ppBoard;
    pBoard->m_Chess = chess;
+   pBoard->m_pMetrics = pMetrics;
    pBoard->m_pFont = LoadFont("ARIAL.TTF", NSDL_FONT_THIN, 255/*R*/, 0/*G*/, 0/*B*/, 12);
 }
 
@@ -18,6 +19,7 @@ void FreeBoard(struct Board** ppBoard)
    struct Board* pBoard = *ppBoard;
 
    pBoard->m_Chess = NULL;
+   pBoard->m_pMetrics = NULL;
 
    FreeFont(pBoard->m_pFont);
 
