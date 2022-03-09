@@ -9,19 +9,19 @@
 
 void IntToA(char* pstrBuffer, int bufferSize, int n)
 {
-#ifdef _TINSPIRE
-   sprintf(pstrBuffer, "%d", n);
+#ifdef _WIN32
+    sprintf_s(pstrBuffer, bufferSize, "%d", n);
 #else
-   sprintf_s(pstrBuffer, bufferSize, "%d", n);
+   sprintf(pstrBuffer, "%d", n);
 #endif
 }
 
 void StringCopy(char* pstrOutput, int bufferSize, char* pstrInput)
 {
-#ifdef _TINSPIRE
-   strcpy(pstrOutput, pstrInput);
+#ifdef _WIN32
+    strcpy_s(pstrOutput, bufferSize, pstrInput);
 #else
-   strcpy_s(pstrOutput, bufferSize, pstrInput);
+    strcpy(pstrOutput, pstrInput);
 #endif
 }
 

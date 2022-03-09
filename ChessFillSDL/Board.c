@@ -11,7 +11,7 @@ void CreateBoard(struct Board** ppBoard, struct ChessFillLib* chess, struct Metr
    struct Board* pBoard = *ppBoard;
    pBoard->m_Chess = chess;
    pBoard->m_pMetrics = pMetrics;
-   pBoard->m_pFont = LoadFont("ARIAL.TTF", NSDL_FONT_THIN, 255/*R*/, 0/*G*/, 0/*B*/, 12);
+   pBoard->m_pFont = LoadFont("arial.ttf", NSDL_FONT_THIN, 255/*R*/, 0/*G*/, 0/*B*/, 12);
 }
 
 void FreeBoard(struct Board** ppBoard)

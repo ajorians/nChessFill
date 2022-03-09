@@ -11,7 +11,7 @@ void CreateUsedPieceIndicator(struct UsedPieceIndicator** ppUsedPieceIndicator, 
    struct UsedPieceIndicator* pUsedPieceIndicator = *ppUsedPieceIndicator;
    pUsedPieceIndicator->m_Chess = chess;
    pUsedPieceIndicator->m_pMetrics = pMetrics;
-   pUsedPieceIndicator->m_pFont = LoadFont("ARIAL.TTF", NSDL_FONT_THIN, 255/*R*/, 0/*G*/, 0/*B*/, 12);
+   pUsedPieceIndicator->m_pFont = LoadFont("arial.ttf", NSDL_FONT_THIN, 255/*R*/, 0/*G*/, 0/*B*/, 12);
 }
 
 void FreeUsedPieceIndicator(struct UsedPieceIndicator** ppUsedPieceIndicator)
@@ -75,7 +75,7 @@ void DrawPiece( struct UsedPieceIndicator* pUsedPieceIndicator, struct SDL_Surfa
 
    DrawText( pScreen, pUsedPieceIndicator->m_pFont, piecePosX, piecePosY, buffer, 0, 0, 255);
 
-   enum PlayStatus playStatus = GetPiecePlayStatus( pUsedPieceIndicator->m_Chess, pieceType, pieceIndex );
+    enum PiecePlayedStatus playStatus = GetPiecePlayStatus( pUsedPieceIndicator->m_Chess, pieceType, pieceIndex );
    if ( playStatus == PieceWasPlayed )
    {
       DrawPieceUsed( pUsedPieceIndicator, pScreen, row, col );

@@ -21,7 +21,7 @@ void CreateMainMenu( struct MainMenu** ppMenu, struct SDL_Surface* pScreen )
    //UpdateSelectedItems(pMenu);
 
    //CreateBackground(&(pMenu->m_pBackground), pMenu->m_pScreen, pMenu->m_pConfig, 0);
-   pMenu->m_pFont = LoadFont( "ARIAL.TTF", NSDL_FONT_THIN, 255/*R*/, 0/*G*/, 0/*B*/, 12 );
+   pMenu->m_pFont = LoadFont( "arial.ttf", NSDL_FONT_THIN, 255/*R*/, 0/*G*/, 0/*B*/, 12 );
 
    //CreateStarDrawer( &pMenu->m_pStarDrawer );
 
